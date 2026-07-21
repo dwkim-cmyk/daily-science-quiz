@@ -1,0 +1,529 @@
+<title>매일 과학 · 오늘의 관측</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --ground: #E9EDE3;      /* pale sage paper */
+    --paper: #F5F7EF;       /* card surface, a touch lighter */
+    --ink: #1B322B;         /* deep pine */
+    --ink-soft: #4A5D53;    /* muted pine for secondary text */
+    --accent: #1F7A4D;      /* emerald — curiosity/correct */
+    --accent-deep: #163B29; /* header band */
+    --clay: #C1502E;        /* wrong feedback only */
+    --line: rgba(27, 50, 43, 0.10);
+    --grid: rgba(27, 50, 43, 0.045);
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: var(--ground);
+    /* graph-paper grid */
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 18px 48px;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    background: var(--accent-deep);
+    color: var(--paper);
+    margin: 0 -18px 0;
+    padding: 26px 22px 22px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245, 247, 239, 0.62);
+    margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .eyebrow .day {
+    color: var(--paper);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+  }
+  header h1.brand {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 750;
+    letter-spacing: -0.01em;
+  }
+  header .date {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: rgba(245, 247, 239, 0.7);
+    margin-top: 6px;
+  }
+
+  /* ---------- stats strip ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 18px 0 22px;
+  }
+  .stat {
+    background: var(--paper);
+    padding: 12px 8px 11px;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .stat .lab {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+    margin-top: 3px;
+  }
+
+  /* ---------- card ---------- */
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 22px 26px;
+    box-shadow: 0 1px 0 rgba(27,50,43,0.04);
+  }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(31, 122, 77, 0.10);
+    border: 1px solid rgba(31, 122, 77, 0.22);
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  .fact-title {
+    font-size: 23px;
+    font-weight: 750;
+    line-height: 1.35;
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+  .fact-body {
+    font-size: 16px;
+    color: #263a32;
+    margin: 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--line);
+    margin: 22px 0;
+    position: relative;
+  }
+  .divider::after {
+    content: "Q";
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--paper);
+    padding: 0 10px;
+    position: absolute;
+    left: 50%;
+    top: -9px;
+    transform: translateX(-50%);
+  }
+
+  .q {
+    font-size: 17px;
+    font-weight: 650;
+    margin: 0 0 16px;
+    line-height: 1.45;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .opt {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    text-align: left;
+    background: var(--ground);
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: border-color .15s, background .15s, transform .08s;
+  }
+  .opt .mark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    width: 26px; height: 26px;
+    flex: 0 0 26px;
+    display: flex; align-items: center; justify-content: center;
+    transition: inherit;
+  }
+  .opt:not(:disabled):hover { border-color: var(--accent); }
+  .opt:not(:disabled):active { transform: scale(0.99); }
+  .opt:disabled { cursor: default; }
+
+  .opt.correct {
+    border-color: var(--accent);
+    background: rgba(31, 122, 77, 0.10);
+  }
+  .opt.correct .mark {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+  }
+  .opt.wrong {
+    border-color: var(--clay);
+    background: rgba(193, 80, 46, 0.08);
+  }
+  .opt.wrong .mark {
+    background: var(--clay); color: #fff; border-color: var(--clay);
+  }
+  .opt.dim { opacity: 0.5; }
+
+  /* ---------- result ---------- */
+  .result {
+    margin-top: 18px;
+    border-left: 3px solid var(--accent);
+    padding: 12px 0 12px 15px;
+    display: none;
+  }
+  .result.show { display: block; animation: rise .35s ease both; }
+  .result .verdict {
+    font-weight: 700;
+    font-size: 15px;
+    margin: 0 0 6px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .result.miss { border-left-color: var(--clay); }
+  .result.miss .verdict { color: var(--clay); }
+  .result.hit .verdict { color: var(--accent); }
+  .result .explain { margin: 0; font-size: 14.5px; color: #33453d; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .result.show { animation: none; }
+    .opt { transition: none; }
+  }
+
+  .done-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .done-note b { color: var(--accent); }
+
+  /* ---------- empty / test ---------- */
+  .empty {
+    background: var(--paper);
+    border: 1px dashed var(--line);
+    border-radius: 18px;
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--ink-soft);
+  }
+
+  .testbar {
+    margin-top: 26px;
+    border-top: 1px dashed var(--line);
+    padding-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .testbar .lbl {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    opacity: 0.75;
+  }
+  .testbar button {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  .testbar button:hover { border-color: var(--accent); color: var(--accent); }
+  .testbar button:disabled { opacity: 0.35; cursor: default; }
+</style>
+
+<div class="app">
+  <header>
+    <p class="eyebrow"><span>오늘의 관측</span><span class="day" id="dayLabel">DAY 001</span></p>
+    <h1 class="brand">매일 과학</h1>
+    <div class="date" id="dateLabel">—</div>
+  </header>
+
+  <section class="stats">
+    <div class="stat"><div class="num" id="stStreak">0</div><div class="lab">연속 관측일</div></div>
+    <div class="stat"><div class="num" id="stAcc">–</div><div class="lab">정답률</div></div>
+    <div class="stat"><div class="num" id="stSolved">0</div><div class="lab">푼 문제</div></div>
+  </section>
+
+  <main id="stage"></main>
+
+  <div class="testbar">
+    <span class="lbl">테스트용 · 다른 날 미리보기</span>
+    <span>
+      <button id="prevBtn">◀ 이전</button>
+      <button id="nextBtn">다음 ▶</button>
+    </span>
+  </div>
+</div>
+
+<script>
+  // ---------- 콘텐츠 재고 (샘플 12개) ----------
+  const ITEMS = [
+    { field: "빛 · 물리", title: "바닷물은 왜 파랗게 보일까",
+      body: "물은 햇빛 중 빨간색 계열의 긴 파장을 잘 흡수하고, 파란색 계열의 짧은 파장은 덜 흡수해 되돌려 보냅니다. 그래서 물이 깊을수록 남은 파란빛이 우리 눈에 들어와 파랗게 보입니다.",
+      q: "바닷물이 파랗게 보이는 가장 큰 이유는?",
+      options: ["하늘색이 그대로 비쳐서", "물이 빨간 계열 빛을 더 많이 흡수해서", "바닷속 물고기 색 때문에", "소금이 파란색이라서"],
+      answer: 1,
+      explain: "물 자체가 빨강·주황 같은 긴 파장을 흡수하고 파란빛을 남깁니다. 하늘 반사도 조금 더하지만 주된 이유는 물의 빛 흡수예요." },
+
+    { field: "우주", title: "가장 뜨거운 행성은 수성이 아니다",
+      body: "태양에 가장 가까운 행성은 수성이지만, 표면이 가장 뜨거운 행성은 금성입니다. 금성은 두꺼운 이산화탄소 대기가 열을 가둬(온실효과) 표면 온도가 460도를 넘습니다.",
+      q: "태양계에서 표면이 가장 뜨거운 행성은?",
+      options: ["수성", "금성", "화성", "목성"],
+      answer: 1,
+      explain: "수성이 태양에 더 가깝지만 대기가 거의 없어 열을 못 가둡니다. 금성은 짙은 대기의 온실효과로 훨씬 더 뜨거워요." },
+
+    { field: "우리 몸", title: "몸에서 가장 큰 장기는?",
+      body: "흔히 간이나 폐를 떠올리지만, 우리 몸에서 가장 큰 장기는 '피부'입니다. 성인 피부를 다 펼치면 약 2제곱미터, 몸무게의 약 15%를 차지합니다.",
+      q: "사람 몸에서 가장 큰 장기는?",
+      options: ["간", "피부", "폐", "심장"],
+      answer: 1,
+      explain: "피부도 엄연한 장기입니다. 넓이도 무게도 가장 크고, 체온 조절·방어 같은 중요한 일을 해요." },
+
+    { field: "화학", title: "다이아몬드와 연필심은 형제",
+      body: "세상에서 가장 단단한 다이아몬드와, 잘 부서지는 연필심(흑연)은 사실 똑같은 원소인 '탄소'로만 이뤄져 있습니다. 탄소 원자가 어떻게 배열되느냐에 따라 성질이 완전히 달라집니다.",
+      q: "다이아몬드와 연필심(흑연)의 공통점은?",
+      options: ["둘 다 금속이다", "둘 다 탄소로 되어 있다", "둘 다 물에 녹는다", "둘 다 무게가 같다"],
+      answer: 1,
+      explain: "둘 다 탄소 100%입니다. 원자 배열이 촘촘한 3차원이면 다이아몬드, 얇은 층으로 쌓이면 흑연이 돼요." },
+
+    { field: "소리 · 물리", title: "우주에서는 소리가 안 들린다",
+      body: "소리는 공기나 물 같은 매질이 떨려야 전달됩니다. 우주는 거의 진공이라 떨릴 것이 없어 소리가 전해지지 않습니다. 영화 속 우주 폭발음은 사실 들릴 수 없어요.",
+      q: "우주 공간에서 소리가 전달되지 않는 이유는?",
+      options: ["너무 추워서", "소리를 전달할 매질(공기 등)이 없어서", "중력이 없어서", "빛이 소리를 막아서"],
+      answer: 1,
+      explain: "소리는 매질의 진동으로 퍼집니다. 진공인 우주엔 진동시킬 공기가 없어 소리가 못 가요." },
+
+    { field: "날씨", title: "번개까지 거리 재는 법",
+      body: "빛은 소리보다 훨씬 빨라 번개가 먼저 보이고 천둥은 나중에 들립니다. 소리는 1초에 약 340미터를 가므로, 번개 후 천둥까지 3초면 번개는 약 1킬로미터 떨어져 있습니다.",
+      q: "번개가 번쩍인 뒤 천둥이 3초 후 들렸다면, 번개까지 거리는?",
+      options: ["약 100미터", "약 1킬로미터", "약 10킬로미터", "약 30미터"],
+      answer: 1,
+      explain: "소리는 1초에 약 340m. 3초면 약 1km입니다. '천둥이 몇 초 뒤 오나'로 대략 거리를 잴 수 있어요." },
+
+    { field: "우리 몸", title: "아기가 어른보다 뼈가 많다",
+      body: "어른의 뼈는 206개지만, 갓 태어난 아기는 약 300개의 뼈를 가지고 있습니다. 자라면서 여러 뼈가 서로 붙어(융합) 개수가 줄어듭니다.",
+      q: "갓 태어난 아기와 어른의 뼈 개수를 비교하면?",
+      options: ["아기가 더 많다", "어른이 더 많다", "똑같다", "아기는 뼈가 없다"],
+      answer: 0,
+      explain: "아기 약 300개 → 어른 206개. 자라며 머리뼈 등 여러 뼈가 하나로 붙기 때문이에요." },
+
+    { field: "물 · 화학", title: "물은 얼면 부피가 커진다",
+      body: "대부분의 물질은 얼면 부피가 줄지만, 물은 반대로 얼 때 부피가 약 9% 늘어납니다. 그래서 겨울에 물을 꽉 채운 병을 얼리면 터지고, 얼음이 물에 뜹니다.",
+      q: "물이 얼음이 되면 부피는?",
+      options: ["줄어든다", "늘어난다", "변화 없다", "반으로 준다"],
+      answer: 1,
+      explain: "물은 얼 때 분자가 육각형으로 성글게 배열돼 부피가 늘고 밀도가 낮아집니다. 그래서 얼음이 물에 떠요." },
+
+    { field: "우주 · 빛", title: "빛은 1초에 지구 일곱 바퀴 반",
+      body: "빛의 속도는 1초에 약 30만 킬로미터입니다. 지구 둘레가 약 4만 킬로미터이니, 빛은 1초 만에 지구를 약 일곱 바퀴 반이나 돌 수 있습니다.",
+      q: "빛은 1초 동안 지구를 몇 바퀴쯤 돌 수 있을까?",
+      options: ["한 바퀴", "약 일곱 바퀴 반", "백 바퀴", "반 바퀴"],
+      answer: 1,
+      explain: "빛 속도 약 30만 km/s ÷ 지구 둘레 약 4만 km ≈ 7.5바퀴. 상상하기 어려울 만큼 빠릅니다." },
+
+    { field: "생물", title: "꿀벌 한 마리가 평생 만드는 꿀",
+      body: "일벌 한 마리가 평생 만드는 꿀은 겨우 티스푼의 12분의 1 정도입니다. 우리가 먹는 꿀 한 병에는 수많은 벌의 평생 노동이 담겨 있는 셈입니다.",
+      q: "일벌 한 마리가 평생 모으는 꿀의 양은 대략?",
+      options: ["티스푼 12분의 1 정도", "한 컵 정도", "한 병 정도", "1리터 정도"],
+      answer: 0,
+      explain: "아주 적은 양이에요. 그래서 꿀은 수천 마리 벌의 협업으로 만들어지는 귀한 식품입니다." },
+
+    { field: "화학 · 상태변화", title: "고체가 바로 기체로: 승화",
+      body: "드라이아이스는 녹아 물이 되지 않고, 고체에서 바로 기체(이산화탄소)로 변합니다. 이렇게 액체 단계를 건너뛰는 변화를 '승화'라고 합니다.",
+      q: "고체가 액체를 거치지 않고 바로 기체가 되는 현상은?",
+      options: ["증발", "승화", "응결", "융해"],
+      answer: 1,
+      explain: "드라이아이스나 겨울철 언 빨래가 마르는 것이 승화예요. 액체 단계를 건너뜁니다." },
+
+    { field: "생명 · DNA", title: "모든 생명의 설계도, 이중나선",
+      body: "우리 몸을 만드는 유전 정보 DNA는 두 가닥이 사다리처럼 꼬인 '이중나선' 구조입니다. 이 구조 덕분에 세포가 나뉠 때 정보를 정확히 복사할 수 있습니다.",
+      q: "DNA의 기본 구조를 부르는 이름은?",
+      options: ["이중나선", "삼각형", "벌집 구조", "일직선"],
+      answer: 0,
+      explain: "1953년 왓슨과 크릭이 밝힌 이중나선. 두 가닥이 서로 짝을 이뤄 정보 복제가 정확해집니다." }
+  ];
+
+  // ---------- 날짜 / 저장 ----------
+  const START = new Date(2026, 6, 21); // 2026-07-21 = DAY 1
+  const KEY = "science_daily_v1";
+  const MARKS = ["A", "B", "C", "D"];
+
+  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function todayIndex() {
+    const diff = midnight(new Date()) - midnight(START);
+    return Math.floor(diff / 86400000);
+  }
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || { records: {} }; }
+    catch (e) { return { records: {} }; }
+  }
+  function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
+
+  let state = load();
+  const REAL = todayIndex();
+  let view = Math.min(Math.max(REAL, 0), ITEMS.length - 1);
+
+  // ---------- 통계 ----------
+  function computeStats() {
+    const recs = state.records;
+    const keys = Object.keys(recs);
+    const solved = keys.length;
+    const correct = keys.filter(k => recs[k].correct).length;
+    const acc = solved ? Math.round((correct / solved) * 100) : null;
+    // 연속 관측일: 오늘부터 거꾸로 연속으로 푼 날 수
+    let streak = 0;
+    for (let i = REAL; i >= 0; i--) {
+      if (recs[i]) streak++; else break;
+    }
+    return { solved, acc, streak };
+  }
+  function renderStats() {
+    const s = computeStats();
+    document.getElementById("stStreak").textContent = s.streak;
+    document.getElementById("stAcc").textContent = s.acc === null ? "–" : s.acc + "%";
+    document.getElementById("stSolved").textContent = s.solved;
+  }
+
+  // ---------- 렌더 ----------
+  function renderHeader() {
+    document.getElementById("dayLabel").textContent = "DAY " + String(view + 1).padStart(3, "0");
+    const d = new Date(midnight(START).getTime() + view * 86400000);
+    const opts = { month: "long", day: "numeric", weekday: "long" };
+    let label = d.toLocaleDateString("ko-KR", opts);
+    if (view === REAL) label += " · 오늘";
+    document.getElementById("dateLabel").textContent = label;
+  }
+
+  function renderStage() {
+    const stage = document.getElementById("stage");
+    if (REAL >= ITEMS.length && view === REAL) {
+      stage.innerHTML =
+        '<div class="empty"><div style="font-size:26px;margin-bottom:8px;">🔭</div>' +
+        '준비된 문제를 모두 만났어요.<br>새 문제가 채워지면 다시 찾아와 주세요.</div>';
+      return;
+    }
+    const it = ITEMS[view];
+    const rec = state.records[view];
+
+    let html = '';
+    html += '<article class="card">';
+    html += '<span class="tag">' + it.field + '</span>';
+    html += '<h2 class="fact-title">' + it.title + '</h2>';
+    html += '<p class="fact-body">' + it.body + '</p>';
+    html += '<div class="divider"></div>';
+    html += '<p class="q">' + it.q + '</p>';
+    html += '<div class="options" id="opts">';
+    it.options.forEach((o, i) => {
+      html += '<button class="opt" data-i="' + i + '"><span class="mark">' + MARKS[i] + '</span><span>' + o + '</span></button>';
+    });
+    html += '</div>';
+    html += '<div class="result" id="result"><p class="verdict" id="verdict"></p><p class="explain" id="explain"></p></div>';
+    html += '<div class="done-note" id="doneNote" style="display:none;"></div>';
+    html += '</article>';
+    stage.innerHTML = html;
+
+    const buttons = [...stage.querySelectorAll(".opt")];
+    if (rec) {
+      revealAnswer(it, rec.choice, buttons, false);
+    } else {
+      buttons.forEach(b => b.addEventListener("click", () => onAnswer(it, parseInt(b.dataset.i), buttons)));
+    }
+  }
+
+  function onAnswer(it, choice, buttons) {
+    const correct = choice === it.answer;
+    state.records[view] = { choice, correct };
+    save(state);
+    revealAnswer(it, choice, buttons, true);
+    renderStats();
+  }
+
+  function revealAnswer(it, choice, buttons, justAnswered) {
+    buttons.forEach(b => {
+      const i = parseInt(b.dataset.i);
+      b.disabled = true;
+      if (i === it.answer) b.classList.add("correct");
+      else if (i === choice) b.classList.add("wrong");
+      else b.classList.add("dim");
+    });
+    const correct = choice === it.answer;
+    const result = document.getElementById("result");
+    result.classList.add("show", correct ? "hit" : "miss");
+    document.getElementById("verdict").textContent = correct ? "정답이에요!" : "아쉬워요";
+    document.getElementById("explain").textContent = it.explain;
+
+    const note = document.getElementById("doneNote");
+    if (view === REAL) {
+      note.style.display = "block";
+      note.innerHTML = "오늘의 관측 완료 · <b>내일 또 만나요</b>";
+    }
+  }
+
+  // ---------- 테스트 내비 ----------
+  function refresh() { renderHeader(); renderStats(); renderStage(); syncNav(); }
+  function syncNav() {
+    document.getElementById("prevBtn").disabled = view <= 0;
+    document.getElementById("nextBtn").disabled = view >= ITEMS.length - 1;
+  }
+  document.getElementById("prevBtn").addEventListener("click", () => { if (view > 0) { view--; refresh(); } });
+  document.getElementById("nextBtn").addEventListener("click", () => { if (view < ITEMS.length - 1) { view++; refresh(); } });
+
+  refresh();
+</script>

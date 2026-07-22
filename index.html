@@ -1,26 +1,25 @@
-<title>매일 과학 · 오늘의 관측</title>
+<title>하루 한 조각 · 과학과 일본어</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
   :root {
-    --ground: #E9EDE3;      /* pale sage paper */
-    --paper: #F5F7EF;       /* card surface, a touch lighter */
-    --ink: #1B322B;         /* deep pine */
-    --ink-soft: #4A5D53;    /* muted pine for secondary text */
-    --accent: #1F7A4D;      /* emerald — curiosity/correct */
-    --accent-deep: #163B29; /* header band */
-    --clay: #C1502E;        /* wrong feedback only */
+    --ground: #E9EDE3;
+    --paper: #F5F7EF;
+    --ink: #1B322B;
+    --ink-soft: #4A5D53;
+    --accent: #1F7A4D;        /* 과학 = 에메랄드 */
+    --accent-deep: #163B29;
+    --clay: #B25534;          /* 일본어 = 클레이 */
+    --clay-deep: #8A3F26;
     --line: rgba(27, 50, 43, 0.10);
     --grid: rgba(27, 50, 43, 0.045);
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     --sans: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    --jp: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", var(--sans);
   }
-
   * { box-sizing: border-box; }
-
   body {
     margin: 0;
     background-color: var(--ground);
-    /* graph-paper grid */
     background-image:
       linear-gradient(var(--grid) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid) 1px, transparent 1px);
@@ -30,278 +29,140 @@
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
+  .app { max-width: 500px; margin: 0 auto; padding: 0 18px 52px; }
 
-  .app {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 0 18px 48px;
-  }
-
-  /* ---------- header ---------- */
   header {
     background: var(--accent-deep);
     color: var(--paper);
-    margin: 0 -18px 0;
+    margin: 0 -18px;
     padding: 26px 22px 22px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
   .eyebrow {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: rgba(245, 247, 239, 0.62);
-    margin: 0 0 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: rgba(245,247,239,0.6);
+    margin: 0 0 10px; display: flex; justify-content: space-between; align-items: baseline;
   }
-  .eyebrow .day {
-    color: var(--paper);
-    font-size: 13px;
-    letter-spacing: 0.14em;
-  }
-  header h1.brand {
-    margin: 0;
-    font-size: 27px;
-    font-weight: 750;
-    letter-spacing: -0.01em;
-  }
-  header .date {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: rgba(245, 247, 239, 0.7);
-    margin-top: 6px;
-  }
+  .eyebrow .day { color: var(--paper); font-size: 13px; letter-spacing: 0.14em; }
+  header h1.brand { margin: 0; font-size: 26px; font-weight: 750; letter-spacing: -0.01em; }
+  header .date { font-family: var(--mono); font-size: 13px; color: rgba(245,247,239,0.68); margin-top: 6px; }
 
-  /* ---------- stats strip ---------- */
   .stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    overflow: hidden;
-    margin: 18px 0 22px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+    border-radius: 14px; overflow: hidden; margin: 18px 0 8px;
   }
-  .stat {
-    background: var(--paper);
-    padding: 12px 8px 11px;
-    text-align: center;
-  }
-  .stat .num {
-    font-family: var(--mono);
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--accent);
-    line-height: 1.1;
-  }
-  .stat .lab {
-    font-size: 11px;
-    color: var(--ink-soft);
-    letter-spacing: 0.04em;
-    margin-top: 3px;
-  }
+  .stat { background: var(--paper); padding: 12px 8px 11px; text-align: center; }
+  .stat .num { font-family: var(--mono); font-size: 21px; font-weight: 600; color: var(--accent); line-height: 1.1; }
+  .stat .lab { font-size: 11px; color: var(--ink-soft); margin-top: 3px; }
 
-  /* ---------- card ---------- */
+  .seclabel {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .seclabel::before { content: ""; width: 16px; height: 2px; background: currentColor; opacity: 0.5; }
+
   .card {
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 24px 22px 26px;
-    box-shadow: 0 1px 0 rgba(27,50,43,0.04);
+    background: var(--paper); border: 1px solid var(--line);
+    border-radius: 18px; padding: 24px 22px 22px;
   }
+  .card.jp { border-color: rgba(178,85,52,0.28); }
+
   .tag {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    background: rgba(31, 122, 77, 0.10);
-    border: 1px solid rgba(31, 122, 77, 0.22);
-    padding: 4px 10px;
-    border-radius: 999px;
-    margin-bottom: 14px;
+    display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    color: var(--accent); background: rgba(31,122,77,0.10); border: 1px solid rgba(31,122,77,0.22);
+    padding: 4px 10px; border-radius: 999px; margin-bottom: 14px;
   }
-  .fact-title {
-    font-size: 23px;
-    font-weight: 750;
-    line-height: 1.35;
-    margin: 0 0 12px;
-    letter-spacing: -0.01em;
-  }
-  .fact-body {
-    font-size: 16px;
-    color: #263a32;
-    margin: 0;
-  }
+  .tag.clay { color: var(--clay-deep); background: rgba(178,85,52,0.10); border-color: rgba(178,85,52,0.26); }
 
-  .divider {
-    height: 1px;
-    background: var(--line);
-    margin: 22px 0;
-    position: relative;
-  }
-  .divider::after {
-    content: "Q";
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    background: var(--paper);
-    padding: 0 10px;
-    position: absolute;
-    left: 50%;
-    top: -9px;
-    transform: translateX(-50%);
-  }
+  .fact-title { font-size: 22px; font-weight: 750; line-height: 1.35; margin: 0 0 14px; letter-spacing: -0.01em; }
+  .fact-body p { font-size: 16px; color: #263a32; margin: 0 0 13px; }
+  .fact-body p:last-child { margin-bottom: 0; }
 
-  .q {
-    font-size: 17px;
-    font-weight: 650;
-    margin: 0 0 16px;
-    line-height: 1.45;
+  .think {
+    margin-top: 18px; padding: 13px 15px; background: rgba(31,122,77,0.07);
+    border-radius: 12px; font-size: 14.5px; color: #2c4a3c;
   }
+  .think b { color: var(--accent); font-weight: 700; }
 
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .opt {
-    font-family: var(--sans);
-    font-size: 15.5px;
-    text-align: left;
-    background: var(--ground);
-    color: var(--ink);
-    border: 1.5px solid var(--line);
-    border-radius: 12px;
-    padding: 13px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: border-color .15s, background .15s, transform .08s;
-  }
-  .opt .mark {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--ink-soft);
-    border: 1.5px solid var(--line);
-    border-radius: 7px;
-    width: 26px; height: 26px;
-    flex: 0 0 26px;
-    display: flex; align-items: center; justify-content: center;
-    transition: inherit;
-  }
-  .opt:not(:disabled):hover { border-color: var(--accent); }
-  .opt:not(:disabled):active { transform: scale(0.99); }
-  .opt:disabled { cursor: default; }
+  .jp-word { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .jp-word .kanji { font-family: var(--jp); font-size: 40px; font-weight: 700; line-height: 1.1; }
+  .jp-word .read { font-family: var(--jp); font-size: 16px; color: var(--clay-deep); }
+  .jp-word .mean { font-size: 17px; color: var(--ink-soft); }
 
-  .opt.correct {
-    border-color: var(--accent);
-    background: rgba(31, 122, 77, 0.10);
+  .jp-block { margin-top: 18px; }
+  .jp-block h4 {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--clay-deep); margin: 0 0 9px; font-weight: 600;
   }
-  .opt.correct .mark {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-  .opt.wrong {
-    border-color: var(--clay);
-    background: rgba(193, 80, 46, 0.08);
-  }
-  .opt.wrong .mark {
-    background: var(--clay); color: #fff; border-color: var(--clay);
-  }
-  .opt.dim { opacity: 0.5; }
+  .hanja { font-size: 15px; color: #3a4a42; }
+  .hanja .arrow { display: block; margin-top: 4px; color: var(--ink-soft); }
 
-  /* ---------- result ---------- */
-  .result {
-    margin-top: 18px;
-    border-left: 3px solid var(--accent);
-    padding: 12px 0 12px 15px;
-    display: none;
-  }
-  .result.show { display: block; animation: rise .35s ease both; }
-  .result .verdict {
-    font-weight: 700;
-    font-size: 15px;
-    margin: 0 0 6px;
-    display: flex; align-items: center; gap: 7px;
-  }
-  .result.miss { border-left-color: var(--clay); }
-  .result.miss .verdict { color: var(--clay); }
-  .result.hit .verdict { color: var(--accent); }
-  .result .explain { margin: 0; font-size: 14.5px; color: #33453d; }
+  .forms { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .forms li { font-size: 14.5px; display: flex; gap: 8px; flex-wrap: wrap; align-items: baseline; }
+  .forms .k { font-family: var(--jp); font-weight: 600; }
+  .forms .r { font-family: var(--jp); font-size: 12.5px; color: var(--clay-deep); }
+  .forms .m { color: var(--ink-soft); }
+  .forms .role { font-size: 11px; color: var(--ink-soft); font-family: var(--mono); min-width: 62px; }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .sents { list-style: none; margin: 0; padding: 0; counter-reset: s; display: flex; flex-direction: column; gap: 14px; }
+  .sents li { position: relative; padding-left: 26px; }
+  .sents li::before {
+    counter-increment: s; content: counter(s); position: absolute; left: 0; top: 1px;
+    font-family: var(--mono); font-size: 11px; color: #fff; background: var(--clay);
+    width: 18px; height: 18px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
   }
-  @media (prefers-reduced-motion: reduce) {
-    .result.show { animation: none; }
-    .opt { transition: none; }
-  }
+  .sents .jpt { font-family: var(--jp); font-size: 16px; font-weight: 500; display: block; }
+  .sents .rdt { font-family: var(--jp); font-size: 13px; color: var(--clay-deep); display: block; margin-top: 2px; }
+  .sents .kot { font-size: 14px; color: var(--ink-soft); display: block; margin-top: 3px; }
 
-  .done-note {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 14px;
-    color: var(--ink-soft);
+  .readbtn {
+    margin-top: 20px; width: 100%; font-family: var(--sans); font-size: 15px; font-weight: 600;
+    background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
+    border-radius: 12px; padding: 12px; cursor: pointer; transition: background .15s, color .15s;
   }
-  .done-note b { color: var(--accent); }
+  .readbtn:hover { background: rgba(31,122,77,0.08); }
+  .readbtn.done { background: var(--accent); color: #fff; }
+  .card.jp .readbtn { color: var(--clay-deep); border-color: var(--clay); }
+  .card.jp .readbtn:hover { background: rgba(178,85,52,0.08); }
+  .card.jp .readbtn.done { background: var(--clay); color: #fff; }
 
-  /* ---------- empty / test ---------- */
+  .alldone { margin: 24px 0 0; text-align: center; font-size: 14.5px; color: var(--ink-soft); display: none; }
+  .alldone.show { display: block; animation: rise .4s ease both; }
+  .alldone b { color: var(--accent); }
+  @keyframes rise { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform:none;} }
+  @media (prefers-reduced-motion: reduce) { .alldone.show { animation: none; } .readbtn { transition: none; } }
+
   .empty {
-    background: var(--paper);
-    border: 1px dashed var(--line);
-    border-radius: 18px;
-    padding: 40px 24px;
-    text-align: center;
-    color: var(--ink-soft);
+    background: var(--paper); border: 1px dashed var(--line); border-radius: 18px;
+    padding: 40px 24px; text-align: center; color: var(--ink-soft);
   }
-
   .testbar {
-    margin-top: 26px;
-    border-top: 1px dashed var(--line);
-    padding-top: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    margin-top: 28px; border-top: 1px dashed var(--line); padding-top: 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
-  .testbar .lbl {
-    font-family: var(--mono);
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    opacity: 0.75;
-  }
-  .testbar button {
-    font-family: var(--mono);
-    font-size: 12px;
-    background: transparent;
-    border: 1px solid var(--line);
-    color: var(--ink-soft);
-    border-radius: 8px;
-    padding: 6px 12px;
-    cursor: pointer;
-  }
+  .testbar .lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); opacity: 0.7; }
+  .testbar button { font-family: var(--mono); font-size: 12px; background: transparent; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
   .testbar button:hover { border-color: var(--accent); color: var(--accent); }
   .testbar button:disabled { opacity: 0.35; cursor: default; }
 </style>
 
 <div class="app">
   <header>
-    <p class="eyebrow"><span>오늘의 관측</span><span class="day" id="dayLabel">DAY 001</span></p>
-    <h1 class="brand">매일 과학</h1>
+    <p class="eyebrow"><span>오늘의 한 조각</span><span class="day" id="dayLabel">DAY 001</span></p>
+    <h1 class="brand">하루 한 조각</h1>
     <div class="date" id="dateLabel">—</div>
   </header>
 
   <section class="stats">
-    <div class="stat"><div class="num" id="stStreak">0</div><div class="lab">연속 관측일</div></div>
-    <div class="stat"><div class="num" id="stAcc">–</div><div class="lab">정답률</div></div>
-    <div class="stat"><div class="num" id="stSolved">0</div><div class="lab">푼 문제</div></div>
+    <div class="stat"><div class="num" id="stStreak">0</div><div class="lab">연속일</div></div>
+    <div class="stat"><div class="num" id="stSci">0</div><div class="lab">읽은 과학</div></div>
+    <div class="stat"><div class="num" id="stJp">0</div><div class="lab">배운 단어</div></div>
   </section>
 
   <main id="stage"></main>
+  <div class="alldone" id="allDone">오늘 몫을 다 읽었어요 · <b>내일 또 만나요</b></div>
 
   <div class="testbar">
     <span class="lbl">테스트용 · 다른 날 미리보기</span>
@@ -313,217 +174,366 @@
 </div>
 
 <script>
-  // ---------- 콘텐츠 재고 (샘플 12개) ----------
-  const ITEMS = [
-    { field: "빛 · 물리", title: "바닷물은 왜 파랗게 보일까",
-      body: "물은 햇빛 중 빨간색 계열의 긴 파장을 잘 흡수하고, 파란색 계열의 짧은 파장은 덜 흡수해 되돌려 보냅니다. 그래서 물이 깊을수록 남은 파란빛이 우리 눈에 들어와 파랗게 보입니다.",
-      q: "바닷물이 파랗게 보이는 가장 큰 이유는?",
-      options: ["하늘색이 그대로 비쳐서", "물이 빨간 계열 빛을 더 많이 흡수해서", "바닷속 물고기 색 때문에", "소금이 파란색이라서"],
-      answer: 1,
-      explain: "물 자체가 빨강·주황 같은 긴 파장을 흡수하고 파란빛을 남깁니다. 하늘 반사도 조금 더하지만 주된 이유는 물의 빛 흡수예요." },
+/* ================= 콘텐츠 재고 ================= */
+const SCI = [
+  { field:"지구과학", title:"왜 눈송이는 육각형일까",
+    body:[
+      "눈송이가 육각형인 까닭은 물 분자의 생김새에 있다. 물 분자는 산소 하나에 수소 둘이 붙어 약 104.5도로 벌어진 모양인데, 물이 얼면 이 분자들이 수소 결합으로 이어지며 육각형 격자를 이룬다. 결정 전체가 이 육각 대칭을 따르기 때문에, 눈송이 가지도 늘 60도와 120도 방향으로만 뻗는다.",
+      "눈송이는 떨어지는 동안 공기 중 수증기가 결정 표면에 곧장 얼어붙으며 자란다. 이때 어떤 모양이 될지는 지나온 온도와 습도에 따라 크게 갈린다. 영하 15도 부근에서는 별처럼 정교하게 갈라진 가지가 나오고, 온도가 달라지면 납작한 판이나 길쭉한 기둥이 된다.",
+      "여섯 갈래가 서로 똑같이 생긴 이유는 단순하다. 여섯 팔이 바싹 붙어 있어 떨어지는 내내 같은 온도와 습도를 함께 겪는다. 같은 조건을 같은 순간에 지나니 여섯 방향이 나란히 자란다. 반대로 눈송이마다 떨어지는 길이 다르니, 두 개가 똑같을 확률은 사실상 없다.",
+      "이 육각 얼음은 눈송이 밖에서도 모습을 드러낸다. 겨울 유리창에 돋는 성에가 같은 결정이고, 맑은 날 해 둘레에 뜨는 빛 고리(햇무리)도 여기서 나온다. 높은 구름 속 육각 얼음 알갱이가 프리즘처럼 햇빛을 꺾어, 해에서 정확히 22도 떨어진 자리에 고리를 그린다."
+    ],
+    think:"아주 추운 날 내린 눈이 잘 뭉쳐지지 않고 보송보송한 것도, 결정 모양과 관계가 있을까?" },
 
-    { field: "우주", title: "가장 뜨거운 행성은 수성이 아니다",
-      body: "태양에 가장 가까운 행성은 수성이지만, 표면이 가장 뜨거운 행성은 금성입니다. 금성은 두꺼운 이산화탄소 대기가 열을 가둬(온실효과) 표면 온도가 460도를 넘습니다.",
-      q: "태양계에서 표면이 가장 뜨거운 행성은?",
-      options: ["수성", "금성", "화성", "목성"],
-      answer: 1,
-      explain: "수성이 태양에 더 가깝지만 대기가 거의 없어 열을 못 가둡니다. 금성은 짙은 대기의 온실효과로 훨씬 더 뜨거워요." },
+  { field:"생물", title:"문어는 왜 심장이 3개일까",
+    body:[
+      "문어는 심장이 셋이다. 둘은 아가미마다 붙어 아가미로 피를 밀어 넣는 아가미 심장이고, 하나는 산소를 실은 피를 온몸으로 보내는 중심 심장이다. 아가미에서 산소를 받아 중심 심장으로, 다시 온몸으로. 펌프질을 두 단계로 나눈 구조다.",
+      "왜 이렇게 진화했을까. 문어의 피는 철(헤모글로빈)이 아니라 구리를 쓰는 헤모시아닌으로 산소를 나른다. 그래서 피가 붉지 않고 푸르스름하다. 헤모시아닌은 산소를 붙드는 힘이 헤모글로빈보다 약해서, 차갑고 산소가 적은 바닷속에서 온몸에 산소를 대려면 더 세게 펌프질해야 한다. 아가미 심장 둘이 그 부족분을 메운다.",
+      "대신 약점도 있다. 물을 뿜어 빠르게 헤엄칠 때는 중심 심장이 잠깐 멈춰, 문어는 금세 지친다. 그래서 헤엄치기보다 팔로 기어다니기를 좋아한다.",
+      "파란 피는 문어만의 것이 아니다. 게, 새우, 거미, 투구게처럼 차가운 물이나 오래된 계통의 동물이 헤모시아닌을 쓴다. 특히 투구게의 파란 피는 세균 오염을 예민하게 잡아내, 백신과 주사제의 안전성 검사에 실제로 쓰인다."
+    ],
+    think:"차가운 심해에 사는 동물일수록 붉은 피보다 파란 피가 유리한 이유는 무엇일까?" },
 
-    { field: "우리 몸", title: "몸에서 가장 큰 장기는?",
-      body: "흔히 간이나 폐를 떠올리지만, 우리 몸에서 가장 큰 장기는 '피부'입니다. 성인 피부를 다 펼치면 약 2제곱미터, 몸무게의 약 15%를 차지합니다.",
-      q: "사람 몸에서 가장 큰 장기는?",
-      options: ["간", "피부", "폐", "심장"],
-      answer: 1,
-      explain: "피부도 엄연한 장기입니다. 넓이도 무게도 가장 크고, 체온 조절·방어 같은 중요한 일을 해요." },
+  { field:"물리", title:"하늘은 파란데 노을은 왜 붉을까",
+    body:[
+      "낮 하늘이 파란 까닭은 햇빛이 공기와 부딪히는 방식에 있다. 햇빛에는 여러 색이 섞여 있는데, 파장이 짧은 파란빛일수록 공기 분자에 부딪혀 사방으로 더 잘 흩어진다. 이 현상을 레일리 산란이라 한다. 흩어진 파란빛이 하늘 어느 쪽에서나 눈에 들어와 하늘이 온통 파랗다.",
+      "산란의 세기는 파장이 짧을수록 급격히 커진다. 파란빛(약 450나노미터)은 빨간빛(약 650나노미터)보다 네다섯 배 강하게 흩어진다. 해질 무렵엔 햇빛이 대기를 더 비스듬하고 길게 지난다. 그동안 파란빛은 거의 다 흩어져 사라지고, 잘 흩어지지 않는 붉은빛만 남아 노을이 붉다.",
+      "그런데 하늘은 왜 파란빛보다 파장이 더 짧은 보라색이 아닐까. 햇빛에 보라 성분이 적고, 사람 눈이 보라색에 덜 민감하기 때문이다. 두 가지가 겹쳐 하늘은 남색이 아니라 하늘색으로 보인다.",
+      "같은 원리를 주변에서도 본다. 멀리 있는 산이 푸르스름한 것은 산과 우리 사이의 공기가 파란빛을 흩뿌린 결과다. 반대로 구름이 하얀 것은 물방울이 공기 분자보다 훨씬 커서 모든 색을 고르게 흩기 때문이다. 색이 다 섞이면 하얗게 보인다."
+    ],
+    think:"구름이 두꺼워지면 왜 하얗던 것이 회색이나 먹구름으로 어두워질까?" },
 
-    { field: "화학", title: "다이아몬드와 연필심은 형제",
-      body: "세상에서 가장 단단한 다이아몬드와, 잘 부서지는 연필심(흑연)은 사실 똑같은 원소인 '탄소'로만 이뤄져 있습니다. 탄소 원자가 어떻게 배열되느냐에 따라 성질이 완전히 달라집니다.",
-      q: "다이아몬드와 연필심(흑연)의 공통점은?",
-      options: ["둘 다 금속이다", "둘 다 탄소로 되어 있다", "둘 다 물에 녹는다", "둘 다 무게가 같다"],
-      answer: 1,
-      explain: "둘 다 탄소 100%입니다. 원자 배열이 촘촘한 3차원이면 다이아몬드, 얇은 층으로 쌓이면 흑연이 돼요." },
+  { field:"물리 · 화학", title:"얼음은 왜 물에 뜰까",
+    body:[
+      "거의 모든 물질은 얼면 부피가 줄어 무거워진다. 물은 반대다. 얼면 부피가 약 9퍼센트 늘고 가벼워져, 얼음이 물에 뜬다.",
+      "이유는 역시 물 분자의 수소 결합에 있다. 액체인 물은 분자들이 서로 가까이 붙어 자유롭게 미끄러진다. 그런데 얼면 수소 결합이 분자들을 육각형으로 성글게 붙들어 사이에 빈 공간이 생긴다. 그래서 같은 개수의 분자가 더 넓은 자리를 차지한다.",
+      "이 사소해 보이는 성질이 생명을 살린다. 겨울에 호수가 얼 때 얼음이 위에 뜨기 때문에, 그 아래 물은 얼지 않고 남는다. 물고기와 미생물은 그 아래에서 겨울을 난다. 만약 얼음이 가라앉았다면 호수는 바닥부터 통째로 얼어붙었을 것이다.",
+      "겨울에 물을 꽉 채운 병이나 수도관이 얼어 터지는 것도 같은 이유다. 늘어난 부피가 갈 곳이 없어 단단한 그릇마저 밀어낸다."
+    ],
+    think:"그렇다면 바닷물은 왜 민물보다 더 낮은 온도에서 어는 걸까?" },
 
-    { field: "소리 · 물리", title: "우주에서는 소리가 안 들린다",
-      body: "소리는 공기나 물 같은 매질이 떨려야 전달됩니다. 우주는 거의 진공이라 떨릴 것이 없어 소리가 전해지지 않습니다. 영화 속 우주 폭발음은 사실 들릴 수 없어요.",
-      q: "우주 공간에서 소리가 전달되지 않는 이유는?",
-      options: ["너무 추워서", "소리를 전달할 매질(공기 등)이 없어서", "중력이 없어서", "빛이 소리를 막아서"],
-      answer: 1,
-      explain: "소리는 매질의 진동으로 퍼집니다. 진공인 우주엔 진동시킬 공기가 없어 소리가 못 가요." },
+  { field:"물리", title:"검은 자동차는 왜 더 뜨거워질까",
+    body:[
+      "여름 주차장에서 검은 차는 흰 차보다 훨씬 뜨겁다. 색이 빛을 다루는 방식이 다르기 때문이다.",
+      "물체의 색은 그 물체가 어떤 빛을 되돌려 보내는지로 정해진다. 흰색은 들어온 빛을 거의 다 반사한다. 검은색은 반대로 대부분을 흡수한다. 흡수된 빛 에너지는 열로 바뀌므로, 검은 표면은 같은 햇빛을 받아도 더 많이 데워진다.",
+      "그래서 더운 지방의 집과 옷은 흰색이 많고, 태양열을 모으는 장치는 검게 칠한다. 우주복이 흰 것도 햇빛을 되도록 반사해 안을 시원하게 지키기 위해서다.",
+      "다만 흡수만 문제가 아니다. 검은 물체는 열을 잘 흡수하는 만큼 잘 내보내기도 한다. 그래서 해가 지면 검은 표면이 오히려 더 빨리 식는다. 잘 받아들이는 것은 잘 돌려주기도 한다."
+    ],
+    think:"사막의 유목민은 뜨거운 낮에 오히려 검은 옷을 입기도 한다. 흰옷이 늘 더 시원한 게 아니라면, 그 이유는 무엇일까?" },
 
-    { field: "날씨", title: "번개까지 거리 재는 법",
-      body: "빛은 소리보다 훨씬 빨라 번개가 먼저 보이고 천둥은 나중에 들립니다. 소리는 1초에 약 340미터를 가므로, 번개 후 천둥까지 3초면 번개는 약 1킬로미터 떨어져 있습니다.",
-      q: "번개가 번쩍인 뒤 천둥이 3초 후 들렸다면, 번개까지 거리는?",
-      options: ["약 100미터", "약 1킬로미터", "약 10킬로미터", "약 30미터"],
-      answer: 1,
-      explain: "소리는 1초에 약 340m. 3초면 약 1km입니다. '천둥이 몇 초 뒤 오나'로 대략 거리를 잴 수 있어요." },
+  { field:"물리", title:"무지개는 왜 항상 그 자리에 뜰까",
+    body:[
+      "무지개는 늘 해를 등지고 봐야 보이고, 언제나 일정한 각도에 걸린다. 빨간 띠는 해 반대 방향에서 약 42도, 보라 띠는 약 40도 자리에 뜬다.",
+      "무지개는 공기 중 물방울이 만든다. 햇빛이 물방울에 들어가며 꺾이고(굴절), 방울 뒤쪽에서 반사된 뒤, 나오면서 다시 꺾인다. 이때 색마다 꺾이는 정도가 조금씩 달라 빛이 여러 색으로 갈라진다.",
+      "여러 번 꺾이고 반사된 빛은 특정 각도에 유난히 몰린다. 그 각도가 빨강은 42도, 보라는 40도다. 그래서 무지개는 아무 데나 뜨지 않고 늘 그 각도의 둥근 띠로 나타난다. 무지개가 둥근 것도 이 각도 때문이다. 사실 무지개는 완전한 원인데, 땅에 가려 위쪽 반원만 보인다.",
+      "비행기나 높은 산에서는 이따금 동그란 무지개 전체가 보인다. 물방울 대신 정원 호스의 물보라로도 같은 무지개를 만들 수 있다. 해를 등지고 물을 뿌리면 42도 자리에 작은 무지개가 걸린다."
+    ],
+    think:"가끔 무지개 바깥에 흐릿한 무지개가 하나 더 뜬다(쌍무지개). 이 바깥 무지개는 왜 색 순서가 반대일까?" },
 
-    { field: "우리 몸", title: "아기가 어른보다 뼈가 많다",
-      body: "어른의 뼈는 206개지만, 갓 태어난 아기는 약 300개의 뼈를 가지고 있습니다. 자라면서 여러 뼈가 서로 붙어(융합) 개수가 줄어듭니다.",
-      q: "갓 태어난 아기와 어른의 뼈 개수를 비교하면?",
-      options: ["아기가 더 많다", "어른이 더 많다", "똑같다", "아기는 뼈가 없다"],
-      answer: 0,
-      explain: "아기 약 300개 → 어른 206개. 자라며 머리뼈 등 여러 뼈가 하나로 붙기 때문이에요." },
+  { field:"수학", title:"벌집은 왜 육각형일까",
+    body:[
+      "벌집의 방은 하나같이 육각형이다. 벌이 수학을 알아서가 아니라, 육각형이 가장 경제적인 모양이기 때문이다.",
+      "같은 넓이의 방을 빈틈없이 이어 붙일 수 있는 정다각형은 삼각형, 사각형, 육각형뿐이다. 이 셋 중 같은 넓이를 담을 때 둘레가 가장 짧은 것이 육각형이다. 둘레가 짧다는 것은 벽을 만드는 데 드는 밀랍이 가장 적다는 뜻이다. 벌은 최소한의 재료로 최대한의 저장 공간을 얻는다.",
+      "이것이 수학에서 오래 추측으로만 남아 있던 '벌집 문제'다. 평면을 같은 넓이의 방으로 나눌 때 육각형이 둘레가 가장 짧다는 사실은 1999년에야 엄밀히 증명되었다.",
+      "자연은 여기저기서 같은 답을 찾아낸다. 현무암이 식으며 갈라진 주상절리, 잠자리 날개의 무늬, 거북 등딱지에도 육각형이 나타난다. 재료를 아끼거나 힘을 고르게 나눠야 할 때, 육각형은 거듭 등장한다."
+    ],
+    think:"눈송이도 육각형, 벌집도 육각형이다. 둘은 같은 이유로 육각형일까, 아니면 다른 이유가 우연히 같은 모양을 만든 걸까?" },
 
-    { field: "물 · 화학", title: "물은 얼면 부피가 커진다",
-      body: "대부분의 물질은 얼면 부피가 줄지만, 물은 반대로 얼 때 부피가 약 9% 늘어납니다. 그래서 겨울에 물을 꽉 채운 병을 얼리면 터지고, 얼음이 물에 뜹니다.",
-      q: "물이 얼음이 되면 부피는?",
-      options: ["줄어든다", "늘어난다", "변화 없다", "반으로 준다"],
-      answer: 1,
-      explain: "물은 얼 때 분자가 육각형으로 성글게 배열돼 부피가 늘고 밀도가 낮아집니다. 그래서 얼음이 물에 떠요." },
+  { field:"천문학", title:"밤하늘은 왜 어두울까",
+    body:[
+      "밤하늘이 어둡다는 건 너무 당연해 보인다. 그런데 여기엔 깊은 수수께끼가 숨어 있다.",
+      "우주가 무한히 넓고, 별이 고르게 흩어져 영원히 존재해 왔다면, 어느 방향을 보든 시선 끝에는 반드시 별이 하나 걸려야 한다. 그렇다면 밤하늘은 온통 별빛으로 대낮처럼 밝아야 한다. 하지만 실제로는 캄캄하다. 이 모순을 '올베르스의 역설'이라 한다.",
+      "답은 우주가 무한히 오래되지 않았다는 데 있다. 우주는 약 138억 년 전에 시작했고, 빛의 속도는 유한하다. 그래서 우리에게 닿을 시간이 없었던 먼 별의 빛은 아직 오지 못했다. 볼 수 있는 우주 안에는 하늘을 다 채울 만큼의 별이 없다.",
+      "게다가 우주는 팽창하고 있어, 먼 별빛은 늘어나며 붉게, 더 나아가 눈에 안 보이는 빛으로 바뀐다. 밤하늘의 어둠은 별이 적어서가 아니라, 우주에 시작이 있었음을 말해 준다."
+    ],
+    think:"우주에 시작이 있었다면, 그 '시작 이전'을 묻는 것은 과연 의미가 있는 질문일까?" },
 
-    { field: "우주 · 빛", title: "빛은 1초에 지구 일곱 바퀴 반",
-      body: "빛의 속도는 1초에 약 30만 킬로미터입니다. 지구 둘레가 약 4만 킬로미터이니, 빛은 1초 만에 지구를 약 일곱 바퀴 반이나 돌 수 있습니다.",
-      q: "빛은 1초 동안 지구를 몇 바퀴쯤 돌 수 있을까?",
-      options: ["한 바퀴", "약 일곱 바퀴 반", "백 바퀴", "반 바퀴"],
-      answer: 1,
-      explain: "빛 속도 약 30만 km/s ÷ 지구 둘레 약 4만 km ≈ 7.5바퀴. 상상하기 어려울 만큼 빠릅니다." },
+  { field:"천문학", title:"달은 왜 늘 같은 면만 보일까",
+    body:[
+      "우리는 언제나 달의 같은 얼굴만 본다. 달의 뒷면은 지구에서 결코 보이지 않는다. 달이 아예 돌지 않아서가 아니다. 오히려 그 반대다.",
+      "달이 지구를 한 바퀴 도는 시간과, 제자리에서 한 바퀴 자전하는 시간이 정확히 같다. 둘 다 약 27.3일이라, 늘 같은 면이 지구를 향한다. 이렇게 공전과 자전 주기가 맞물린 상태를 '조석 고정'이라 한다.",
+      "이건 우연이 아니다. 지구의 중력은 달을 살짝 잡아당겨 럭비공처럼 아주 조금 늘여 놓는다. 아주 오랜 세월 이 힘이 달의 자전에 브레이크를 걸었고, 마침내 한 면이 지구를 향한 채 멈추듯 고정됐다.",
+      "같은 일이 태양계 곳곳에서 일어난다. 목성과 토성의 큰 위성들도 대개 행성에 한 면만 보인다. 그리고 지금은 달이 지구의 자전마저 아주 느리게 늦추고 있다. 먼 미래에는 하루가 지금보다 훨씬 길어질 것이다."
+    ],
+    think:"달이 지구의 자전을 늦춰 잃게 만든 힘은 어디로 갈까? (실제로 달은 매년 약 3.8센티미터씩 지구에서 멀어지고 있다)" },
 
-    { field: "생물", title: "꿀벌 한 마리가 평생 만드는 꿀",
-      body: "일벌 한 마리가 평생 만드는 꿀은 겨우 티스푼의 12분의 1 정도입니다. 우리가 먹는 꿀 한 병에는 수많은 벌의 평생 노동이 담겨 있는 셈입니다.",
-      q: "일벌 한 마리가 평생 모으는 꿀의 양은 대략?",
-      options: ["티스푼 12분의 1 정도", "한 컵 정도", "한 병 정도", "1리터 정도"],
-      answer: 0,
-      explain: "아주 적은 양이에요. 그래서 꿀은 수천 마리 벌의 협업으로 만들어지는 귀한 식품입니다." },
+  { field:"생물", title:"물에 오래 담근 손가락은 왜 쭈글쭈글해질까",
+    body:[
+      "목욕을 오래 하면 손끝과 발바닥이 쭈글쭈글해진다. 물이 스며들어 피부가 부푼 탓이라 여기기 쉽지만, 사실은 그렇지 않다.",
+      "이 주름은 신경계가 일부러 만든다. 손끝이 물에 오래 닿으면 자율신경이 손가락 속 혈관을 수축시키고, 그 위 피부가 오그라들며 골이 진다. 증거가 있다. 신경이 다친 손가락은 물에 담가도 주름이 지지 않는다. 단순히 물에 불어서라면 신경과 상관없이 주름이 져야 한다.",
+      "왜 이런 기능이 진화했을까. 한 연구에서 쭈글쭈글한 손가락은 젖은 물체를 더 잘 집었다. 자동차 타이어의 홈이나 빗물 배수로처럼, 주름이 물길을 내어 미끄러짐을 줄인다는 설명이다. 젖은 환경에서 무언가를 단단히 쥐도록 돕는다는 것이다.",
+      "아직 논쟁은 남아 있다. 주름이 실제로 손힘을 얼마나 키우는지는 연구마다 결과가 엇갈린다. 다만 이 주름이 물 때문에 수동적으로 생기는 게 아니라, 몸이 상황을 읽고 능동적으로 만드는 반응이라는 점은 분명하다."
+    ],
+    think:"손끝뿐 아니라 발바닥도 함께 쭈글쭈글해진다. 발의 주름은 우리 조상에게 무엇을 더 잘하게 해 주었을까?" }
+];
 
-    { field: "화학 · 상태변화", title: "고체가 바로 기체로: 승화",
-      body: "드라이아이스는 녹아 물이 되지 않고, 고체에서 바로 기체(이산화탄소)로 변합니다. 이렇게 액체 단계를 건너뛰는 변화를 '승화'라고 합니다.",
-      q: "고체가 액체를 거치지 않고 바로 기체가 되는 현상은?",
-      options: ["증발", "승화", "응결", "융해"],
-      answer: 1,
-      explain: "드라이아이스나 겨울철 언 빨래가 마르는 것이 승화예요. 액체 단계를 건너뜁니다." },
+const JP = [
+  { level:"N3", word:"影響", read:"えいきょう", mean:"영향",
+    hanja:"影 그림자 영 + 響 울릴 향", hanjaNote:"그림자가 지고 소리가 퍼지듯, 어떤 일이 주변에 미치는 힘이 '영향'이다.",
+    forms:[
+      {role:"명사", k:"影響", r:"えいきょう", m:"영향"},
+      {role:"する동사", k:"影響する", r:"えいきょうする", m:"영향을 미치다"},
+      {role:"관용", k:"影響を与える", r:"えいきょうを あたえる", m:"영향을 주다"},
+      {role:"관용", k:"影響を受ける", r:"えいきょうを うける", m:"영향을 받다"},
+      {role:"파생어", k:"影響力 / 悪影響", r:"えいきょうりょく / あくえいきょう", m:"영향력 / 악영향"}
+    ],
+    sents:[
+      {jp:"天気の影響で電車が遅れた。", r:"てんきの えいきょうで でんしゃが おくれた。", ko:"날씨 영향으로 전철이 늦었다."},
+      {jp:"親の影響で音楽が好きになった。", r:"おやの えいきょうで おんがくが すきに なった。", ko:"부모님 영향으로 음악을 좋아하게 됐다."},
+      {jp:"コーヒーは睡眠に影響を与える。", r:"コーヒーは すいみんに えいきょうを あたえる。", ko:"커피는 수면에 영향을 준다."},
+      {jp:"SNSは若者に大きな影響を与えている。", r:"エスエヌエスは わかものに おおきな えいきょうを あたえている。", ko:"SNS는 젊은이에게 큰 영향을 주고 있다."},
+      {jp:"この決定は会社全体に影響する。", r:"この けっていは かいしゃぜんたいに えいきょうする。", ko:"이 결정은 회사 전체에 영향을 미친다."}
+    ] },
 
-    { field: "생명 · DNA", title: "모든 생명의 설계도, 이중나선",
-      body: "우리 몸을 만드는 유전 정보 DNA는 두 가닥이 사다리처럼 꼬인 '이중나선' 구조입니다. 이 구조 덕분에 세포가 나뉠 때 정보를 정확히 복사할 수 있습니다.",
-      q: "DNA의 기본 구조를 부르는 이름은?",
-      options: ["이중나선", "삼각형", "벌집 구조", "일직선"],
-      answer: 0,
-      explain: "1953년 왓슨과 크릭이 밝힌 이중나선. 두 가닥이 서로 짝을 이뤄 정보 복제가 정확해집니다." }
-  ];
+  { level:"N3", word:"準備", read:"じゅんび", mean:"준비",
+    hanja:"準 준할 준 + 備 갖출 비", hanjaNote:"기준에 맞춰 미리 갖춰 두는 것이 '준비'다.",
+    forms:[
+      {role:"명사", k:"準備", r:"じゅんび", m:"준비"},
+      {role:"する동사", k:"準備する", r:"じゅんびする", m:"준비하다"},
+      {role:"관용", k:"準備ができる", r:"じゅんびが できる", m:"준비가 되다"},
+      {role:"파생어", k:"準備中 / 下準備", r:"じゅんびちゅう / したじゅんび", m:"준비 중 / 사전 준비"}
+    ],
+    sents:[
+      {jp:"旅行の準備をする。", r:"りょこうの じゅんびを する。", ko:"여행 준비를 한다."},
+      {jp:"会議の準備はもうできた。", r:"かいぎの じゅんびは もう できた。", ko:"회의 준비는 벌써 됐다."},
+      {jp:"準備中なので少し待ってください。", r:"じゅんびちゅうなので すこし まってください。", ko:"준비 중이니 조금 기다려 주세요."},
+      {jp:"夕飯の準備を手伝う。", r:"ゆうはんの じゅんびを てつだう。", ko:"저녁 준비를 돕는다."},
+      {jp:"心の準備ができていない。", r:"こころの じゅんびが できていない。", ko:"마음의 준비가 안 됐다."}
+    ] },
 
-  // ---------- 날짜 / 저장 ----------
-  const START = new Date(2026, 6, 21); // 2026-07-21 = DAY 1
-  const KEY = "science_daily_v1";
-  const MARKS = ["A", "B", "C", "D"];
+  { level:"N3", word:"解決", read:"かいけつ", mean:"해결",
+    hanja:"解 풀 해 + 決 정할 결", hanjaNote:"얽힌 것을 풀어 매듭짓는 것이 '해결'이다.",
+    forms:[
+      {role:"명사", k:"解決", r:"かいけつ", m:"해결"},
+      {role:"する동사", k:"解決する", r:"かいけつする", m:"해결하다 / 해결되다"},
+      {role:"관용", k:"問題を解決する", r:"もんだいを かいけつする", m:"문제를 해결하다"},
+      {role:"파생어", k:"解決策 / 未解決", r:"かいけつさく / みかいけつ", m:"해결책 / 미해결"}
+    ],
+    sents:[
+      {jp:"問題はすぐに解決した。", r:"もんだいは すぐに かいけつした。", ko:"문제는 금방 해결됐다."},
+      {jp:"いい解決策が見つからない。", r:"いい かいけつさくが みつからない。", ko:"좋은 해결책이 안 보인다."},
+      {jp:"話し合いで解決しよう。", r:"はなしあいで かいけつしよう。", ko:"대화로 해결하자."},
+      {jp:"その事件は未解決のままだ。", r:"その じけんは みかいけつの ままだ。", ko:"그 사건은 미해결인 채다."},
+      {jp:"お金では解決できない。", r:"おかねでは かいけつできない。", ko:"돈으로는 해결할 수 없다."}
+    ] },
 
-  function midnight(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
-  function todayIndex() {
-    const diff = midnight(new Date()) - midnight(START);
-    return Math.floor(diff / 86400000);
+  { level:"N3", word:"経験", read:"けいけん", mean:"경험",
+    hanja:"経 지날 경 + 験 겪을 험", hanjaNote:"직접 지나며 몸소 겪은 것이 '경험'이다.",
+    forms:[
+      {role:"명사", k:"経験", r:"けいけん", m:"경험"},
+      {role:"する동사", k:"経験する", r:"けいけんする", m:"경험하다"},
+      {role:"관용", k:"経験を積む", r:"けいけんを つむ", m:"경험을 쌓다"},
+      {role:"파생어", k:"未経験 / 経験者", r:"みけいけん / けいけんしゃ", m:"미경험 / 경험자"}
+    ],
+    sents:[
+      {jp:"いい経験になった。", r:"いい けいけんに なった。", ko:"좋은 경험이 됐다."},
+      {jp:"海外で働いた経験がある。", r:"かいがいで はたらいた けいけんが ある。", ko:"해외에서 일한 경험이 있다."},
+      {jp:"経験を積んで上手になる。", r:"けいけんを つんで じょうずに なる。", ko:"경험을 쌓아 능숙해진다."},
+      {jp:"未経験でも応募できる。", r:"みけいけんでも おうぼできる。", ko:"경험이 없어도 지원할 수 있다."},
+      {jp:"初めて経験することばかりだ。", r:"はじめて けいけんする ことばかりだ。", ko:"처음 경험하는 것뿐이다."}
+    ] },
+
+  { level:"N3", word:"約束", read:"やくそく", mean:"약속",
+    hanja:"約 맺을 약 + 束 묶을 속", hanjaNote:"서로 말을 맺어 묶어 두는 것이 '약속'이다.",
+    forms:[
+      {role:"명사", k:"約束", r:"やくそく", m:"약속"},
+      {role:"する동사", k:"約束する", r:"やくそくする", m:"약속하다"},
+      {role:"관용", k:"約束を守る / 破る", r:"やくそくを まもる / やぶる", m:"약속을 지키다 / 어기다"},
+      {role:"파생어", k:"口約束", r:"くちやくそく", m:"말뿐인 약속"}
+    ],
+    sents:[
+      {jp:"友達と約束がある。", r:"ともだちと やくそくが ある。", ko:"친구와 약속이 있다."},
+      {jp:"約束は必ず守る。", r:"やくそくは かならず まもる。", ko:"약속은 반드시 지킨다."},
+      {jp:"明日会う約束をした。", r:"あした あう やくそくを した。", ko:"내일 만날 약속을 했다."},
+      {jp:"約束の時間に遅れた。", r:"やくそくの じかんに おくれた。", ko:"약속 시간에 늦었다."},
+      {jp:"そんな約束はしていない。", r:"そんな やくそくは していない。", ko:"그런 약속은 하지 않았다."}
+    ] },
+
+  { level:"N3", word:"効果", read:"こうか", mean:"효과",
+    hanja:"効 효험 효 + 果 결과 과", hanjaNote:"애쓴 보람으로 나타난 결과가 '효과'다.",
+    forms:[
+      {role:"명사", k:"効果", r:"こうか", m:"효과"},
+      {role:"な형용사", k:"効果的", r:"こうかてき", m:"효과적"},
+      {role:"관용", k:"効果がある / 出る", r:"こうかが ある / でる", m:"효과가 있다 / 나타나다"},
+      {role:"파생어", k:"逆効果", r:"ぎゃくこうか", m:"역효과"}
+    ],
+    sents:[
+      {jp:"薬の効果が出てきた。", r:"くすりの こうかが でてきた。", ko:"약효가 나기 시작했다."},
+      {jp:"この方法は効果がある。", r:"この ほうほうは こうかが ある。", ko:"이 방법은 효과가 있다."},
+      {jp:"効果的な勉強法を探す。", r:"こうかてきな べんきょうほうを さがす。", ko:"효과적인 공부법을 찾는다."},
+      {jp:"叱るのは逆効果だ。", r:"しかるのは ぎゃくこうかだ。", ko:"혼내는 건 역효과다."},
+      {jp:"運動の効果を実感する。", r:"うんどうの こうかを じっかんする。", ko:"운동 효과를 실감한다."}
+    ] },
+
+  { level:"N3", word:"参加", read:"さんか", mean:"참가",
+    hanja:"参 참여할 참 + 加 더할 가", hanjaNote:"무리에 끼어 함께 더해지는 것이 '참가'다.",
+    forms:[
+      {role:"명사", k:"参加", r:"さんか", m:"참가"},
+      {role:"する동사", k:"参加する", r:"さんかする", m:"참가하다"},
+      {role:"관용", k:"参加を申し込む", r:"さんかを もうしこむ", m:"참가를 신청하다"},
+      {role:"파생어", k:"参加者 / 不参加", r:"さんかしゃ / ふさんか", m:"참가자 / 불참"}
+    ],
+    sents:[
+      {jp:"会議に参加する。", r:"かいぎに さんかする。", ko:"회의에 참가한다."},
+      {jp:"誰でも参加できる。", r:"だれでも さんかできる。", ko:"누구나 참가할 수 있다."},
+      {jp:"参加者が集まってきた。", r:"さんかしゃが あつまってきた。", ko:"참가자가 모이기 시작했다."},
+      {jp:"今回は不参加にする。", r:"こんかいは ふさんかに する。", ko:"이번엔 불참하기로 한다."},
+      {jp:"イベントへの参加を申し込んだ。", r:"イベントへの さんかを もうしこんだ。", ko:"이벤트 참가를 신청했다."}
+    ] },
+
+  { level:"N3", word:"生活", read:"せいかつ", mean:"생활",
+    hanja:"生 살 생 + 活 살 활", hanjaNote:"나서 살아가는 나날의 일상이 '생활'이다.",
+    forms:[
+      {role:"명사", k:"生活", r:"せいかつ", m:"생활"},
+      {role:"する동사", k:"生活する", r:"せいかつする", m:"생활하다"},
+      {role:"관용", k:"生活が苦しい", r:"せいかつが くるしい", m:"생활이 힘들다"},
+      {role:"파생어", k:"日常生活 / 生活費", r:"にちじょうせいかつ / せいかつひ", m:"일상생활 / 생활비"}
+    ],
+    sents:[
+      {jp:"田舎で静かに生活する。", r:"いなかで しずかに せいかつする。", ko:"시골에서 조용히 생활한다."},
+      {jp:"一人暮らしの生活に慣れた。", r:"ひとりぐらしの せいかつに なれた。", ko:"자취 생활에 익숙해졌다."},
+      {jp:"生活費が足りない。", r:"せいかつひが たりない。", ko:"생활비가 부족하다."},
+      {jp:"規則正しい生活を送る。", r:"きそくただしい せいかつを おくる。", ko:"규칙적인 생활을 한다."},
+      {jp:"生活が少し楽になった。", r:"せいかつが すこし らくに なった。", ko:"생활이 조금 편해졌다."}
+    ] },
+
+  { level:"N3", word:"説明", read:"せつめい", mean:"설명",
+    hanja:"説 말씀 설 + 明 밝을 명", hanjaNote:"말로 밝혀 알기 쉽게 풀어 주는 것이 '설명'이다.",
+    forms:[
+      {role:"명사", k:"説明", r:"せつめい", m:"설명"},
+      {role:"する동사", k:"説明する", r:"せつめいする", m:"설명하다"},
+      {role:"관용", k:"説明を受ける", r:"せつめいを うける", m:"설명을 듣다"},
+      {role:"파생어", k:"説明書 / 説明会", r:"せつめいしょ / せつめいかい", m:"설명서 / 설명회"}
+    ],
+    sents:[
+      {jp:"もう一度説明してください。", r:"もういちど せつめいしてください。", ko:"다시 한 번 설명해 주세요."},
+      {jp:"説明書をよく読む。", r:"せつめいしょを よく よむ。", ko:"설명서를 잘 읽는다."},
+      {jp:"彼の説明は分かりやすい。", r:"かれの せつめいは わかりやすい。", ko:"그의 설명은 이해하기 쉽다."},
+      {jp:"理由を説明する必要がある。", r:"りゆうを せつめいする ひつようが ある。", ko:"이유를 설명할 필요가 있다."},
+      {jp:"会社の説明会に行く。", r:"かいしゃの せつめいかいに いく。", ko:"회사 설명회에 간다."}
+    ] },
+
+  { level:"N2", word:"増加", read:"ぞうか", mean:"증가",
+    hanja:"増 더할 증 + 加 더할 가", hanjaNote:"수나 양이 자꾸 불어나는 것이 '증가'다.",
+    forms:[
+      {role:"명사", k:"増加", r:"ぞうか", m:"증가"},
+      {role:"する동사", k:"増加する", r:"ぞうかする", m:"증가하다"},
+      {role:"관용", k:"人口が増加する", r:"じんこうが ぞうかする", m:"인구가 증가하다"},
+      {role:"파생어", k:"急増 / 減少", r:"きゅうぞう / げんしょう", m:"급증 / 감소(반대말)"}
+    ],
+    sents:[
+      {jp:"人口が増加している。", r:"じんこうが ぞうかしている。", ko:"인구가 증가하고 있다."},
+      {jp:"売り上げが増加した。", r:"うりあげが ぞうかした。", ko:"매출이 증가했다."},
+      {jp:"観光客が急増している。", r:"かんこうきゃくが きゅうぞうしている。", ko:"관광객이 급증하고 있다."},
+      {jp:"事故が増加傾向にある。", r:"じこが ぞうかけいこうに ある。", ko:"사고가 증가 추세다."},
+      {jp:"体重が増加してしまった。", r:"たいじゅうが ぞうかしてしまった。", ko:"체중이 늘어 버렸다."}
+    ] }
+];
+
+/* ================= 날짜 / 저장 ================= */
+const START = new Date(2026, 6, 22); // 2026-07-22 = DAY 1
+const KEY = "haru_v2";
+const DAYS = Math.min(SCI.length, JP.length);
+
+function midnight(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function todayIndex(){ return Math.floor((midnight(new Date()) - midnight(START)) / 86400000); }
+function load(){ try { return JSON.parse(localStorage.getItem(KEY)) || {records:{}}; } catch(e){ return {records:{}}; } }
+function save(s){ localStorage.setItem(KEY, JSON.stringify(s)); }
+
+let state = load();
+const REAL = todayIndex();
+let view = Math.min(Math.max(REAL, 0), DAYS - 1);
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+/* ================= 통계 ================= */
+function renderStats(){
+  const recs = state.records;
+  let sci = 0, jp = 0;
+  Object.keys(recs).forEach(k => { if(recs[k].sci) sci++; if(recs[k].jp) jp++; });
+  let streak = 0;
+  for (let i = REAL; i >= 0; i--){ if (recs[i] && recs[i].sci && recs[i].jp) streak++; else break; }
+  document.getElementById("stStreak").textContent = streak;
+  document.getElementById("stSci").textContent = sci;
+  document.getElementById("stJp").textContent = jp;
+}
+
+/* ================= 렌더 ================= */
+function renderHeader(){
+  document.getElementById("dayLabel").textContent = "DAY " + String(view+1).padStart(3,"0");
+  const d = new Date(midnight(START).getTime() + view*86400000);
+  let label = d.toLocaleDateString("ko-KR", {month:"long", day:"numeric", weekday:"long"});
+  if (view === REAL) label += " · 오늘";
+  document.getElementById("dateLabel").textContent = label;
+}
+
+function sciCard(it, rec){
+  let h = '<div class="seclabel" style="color:var(--accent)">오늘의 과학</div>';
+  h += '<article class="card">';
+  h += '<span class="tag">'+esc(it.field)+'</span>';
+  h += '<h2 class="fact-title">'+esc(it.title)+'</h2>';
+  h += '<div class="fact-body">'+ it.body.map(p=>'<p>'+esc(p)+'</p>').join('') +'</div>';
+  h += '<div class="think"><b>🤔 생각해볼 거리</b><br>'+esc(it.think)+'</div>';
+  h += '<button class="readbtn'+(rec&&rec.sci?' done':'')+'" data-kind="sci">'+(rec&&rec.sci?'✓ 읽음':'다 읽었어요')+'</button>';
+  h += '</article>';
+  return h;
+}
+
+function jpCard(it, rec){
+  let h = '<div class="seclabel" style="color:var(--clay-deep)">오늘의 일본어</div>';
+  h += '<article class="card jp">';
+  h += '<span class="tag clay">'+esc(it.level)+'</span>';
+  h += '<div class="jp-word"><span class="kanji">'+esc(it.word)+'</span><span class="read">'+esc(it.read)+'</span><span class="mean">'+esc(it.mean)+'</span></div>';
+  h += '<div class="jp-block"><h4>한자 풀이</h4><div class="hanja">'+esc(it.hanja)+'<span class="arrow">→ '+esc(it.hanjaNote)+'</span></div></div>';
+  h += '<div class="jp-block"><h4>품사 · 활용</h4><ul class="forms">';
+  it.forms.forEach(f=>{ h += '<li><span class="role">'+esc(f.role)+'</span><span class="k">'+esc(f.k)+'</span><span class="r">'+esc(f.r)+'</span><span class="m">'+esc(f.m)+'</span></li>'; });
+  h += '</ul></div>';
+  h += '<div class="jp-block"><h4>일상 문장 5</h4><ul class="sents">';
+  it.sents.forEach(s=>{ h += '<li><span class="jpt">'+esc(s.jp)+'</span><span class="rdt">'+esc(s.r)+'</span><span class="kot">'+esc(s.ko)+'</span></li>'; });
+  h += '</ul></div>';
+  h += '<button class="readbtn'+(rec&&rec.jp?' done':'')+'" data-kind="jp">'+(rec&&rec.jp?'✓ 배웠어요':'다 배웠어요')+'</button>';
+  h += '</article>';
+  return h;
+}
+
+function renderStage(){
+  const stage = document.getElementById("stage");
+  if (REAL >= DAYS && view === REAL){
+    stage.innerHTML = '<div class="empty"><div style="font-size:26px;margin-bottom:8px;">🌱</div>준비된 조각을 모두 만났어요.<br>새 이야기가 채워지면 다시 찾아와 주세요.</div>';
+    document.getElementById("allDone").classList.remove("show");
+    return;
   }
-  function load() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || { records: {} }; }
-    catch (e) { return { records: {} }; }
-  }
-  function save(s) { localStorage.setItem(KEY, JSON.stringify(s)); }
+  const rec = state.records[view];
+  stage.innerHTML = sciCard(SCI[view], rec) + jpCard(JP[view], rec);
+  stage.querySelectorAll(".readbtn").forEach(b=>{
+    b.addEventListener("click", ()=> toggleRead(b.dataset.kind));
+  });
+  updateAllDone();
+}
 
-  let state = load();
-  const REAL = todayIndex();
-  let view = Math.min(Math.max(REAL, 0), ITEMS.length - 1);
+function toggleRead(kind){
+  const r = state.records[view] || {sci:false, jp:false};
+  r[kind] = !r[kind];
+  state.records[view] = r;
+  save(state);
+  renderStage();
+  renderStats();
+}
 
-  // ---------- 통계 ----------
-  function computeStats() {
-    const recs = state.records;
-    const keys = Object.keys(recs);
-    const solved = keys.length;
-    const correct = keys.filter(k => recs[k].correct).length;
-    const acc = solved ? Math.round((correct / solved) * 100) : null;
-    // 연속 관측일: 오늘부터 거꾸로 연속으로 푼 날 수
-    let streak = 0;
-    for (let i = REAL; i >= 0; i--) {
-      if (recs[i]) streak++; else break;
-    }
-    return { solved, acc, streak };
-  }
-  function renderStats() {
-    const s = computeStats();
-    document.getElementById("stStreak").textContent = s.streak;
-    document.getElementById("stAcc").textContent = s.acc === null ? "–" : s.acc + "%";
-    document.getElementById("stSolved").textContent = s.solved;
-  }
+function updateAllDone(){
+  const r = state.records[view];
+  const el = document.getElementById("allDone");
+  if (r && r.sci && r.jp) el.classList.add("show"); else el.classList.remove("show");
+}
 
-  // ---------- 렌더 ----------
-  function renderHeader() {
-    document.getElementById("dayLabel").textContent = "DAY " + String(view + 1).padStart(3, "0");
-    const d = new Date(midnight(START).getTime() + view * 86400000);
-    const opts = { month: "long", day: "numeric", weekday: "long" };
-    let label = d.toLocaleDateString("ko-KR", opts);
-    if (view === REAL) label += " · 오늘";
-    document.getElementById("dateLabel").textContent = label;
-  }
+/* ================= 내비 ================= */
+function refresh(){ renderHeader(); renderStats(); renderStage(); syncNav(); }
+function syncNav(){
+  document.getElementById("prevBtn").disabled = view <= 0;
+  document.getElementById("nextBtn").disabled = view >= DAYS - 1;
+}
+document.getElementById("prevBtn").addEventListener("click", ()=>{ if(view>0){ view--; refresh(); } });
+document.getElementById("nextBtn").addEventListener("click", ()=>{ if(view<DAYS-1){ view++; refresh(); } });
 
-  function renderStage() {
-    const stage = document.getElementById("stage");
-    if (REAL >= ITEMS.length && view === REAL) {
-      stage.innerHTML =
-        '<div class="empty"><div style="font-size:26px;margin-bottom:8px;">🔭</div>' +
-        '준비된 문제를 모두 만났어요.<br>새 문제가 채워지면 다시 찾아와 주세요.</div>';
-      return;
-    }
-    const it = ITEMS[view];
-    const rec = state.records[view];
-
-    let html = '';
-    html += '<article class="card">';
-    html += '<span class="tag">' + it.field + '</span>';
-    html += '<h2 class="fact-title">' + it.title + '</h2>';
-    html += '<p class="fact-body">' + it.body + '</p>';
-    html += '<div class="divider"></div>';
-    html += '<p class="q">' + it.q + '</p>';
-    html += '<div class="options" id="opts">';
-    it.options.forEach((o, i) => {
-      html += '<button class="opt" data-i="' + i + '"><span class="mark">' + MARKS[i] + '</span><span>' + o + '</span></button>';
-    });
-    html += '</div>';
-    html += '<div class="result" id="result"><p class="verdict" id="verdict"></p><p class="explain" id="explain"></p></div>';
-    html += '<div class="done-note" id="doneNote" style="display:none;"></div>';
-    html += '</article>';
-    stage.innerHTML = html;
-
-    const buttons = [...stage.querySelectorAll(".opt")];
-    if (rec) {
-      revealAnswer(it, rec.choice, buttons, false);
-    } else {
-      buttons.forEach(b => b.addEventListener("click", () => onAnswer(it, parseInt(b.dataset.i), buttons)));
-    }
-  }
-
-  function onAnswer(it, choice, buttons) {
-    const correct = choice === it.answer;
-    state.records[view] = { choice, correct };
-    save(state);
-    revealAnswer(it, choice, buttons, true);
-    renderStats();
-  }
-
-  function revealAnswer(it, choice, buttons, justAnswered) {
-    buttons.forEach(b => {
-      const i = parseInt(b.dataset.i);
-      b.disabled = true;
-      if (i === it.answer) b.classList.add("correct");
-      else if (i === choice) b.classList.add("wrong");
-      else b.classList.add("dim");
-    });
-    const correct = choice === it.answer;
-    const result = document.getElementById("result");
-    result.classList.add("show", correct ? "hit" : "miss");
-    document.getElementById("verdict").textContent = correct ? "정답이에요!" : "아쉬워요";
-    document.getElementById("explain").textContent = it.explain;
-
-    const note = document.getElementById("doneNote");
-    if (view === REAL) {
-      note.style.display = "block";
-      note.innerHTML = "오늘의 관측 완료 · <b>내일 또 만나요</b>";
-    }
-  }
-
-  // ---------- 테스트 내비 ----------
-  function refresh() { renderHeader(); renderStats(); renderStage(); syncNav(); }
-  function syncNav() {
-    document.getElementById("prevBtn").disabled = view <= 0;
-    document.getElementById("nextBtn").disabled = view >= ITEMS.length - 1;
-  }
-  document.getElementById("prevBtn").addEventListener("click", () => { if (view > 0) { view--; refresh(); } });
-  document.getElementById("nextBtn").addEventListener("click", () => { if (view < ITEMS.length - 1) { view++; refresh(); } });
-
-  refresh();
+refresh();
 </script>

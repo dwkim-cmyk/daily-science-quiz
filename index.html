@@ -138,14 +138,6 @@
     background: var(--paper); border: 1px dashed var(--line); border-radius: 18px;
     padding: 40px 24px; text-align: center; color: var(--ink-soft);
   }
-  .testbar {
-    margin-top: 28px; border-top: 1px dashed var(--line); padding-top: 14px;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  }
-  .testbar .lbl { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); opacity: 0.7; }
-  .testbar button { font-family: var(--mono); font-size: 12px; background: transparent; border: 1px solid var(--line); color: var(--ink-soft); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
-  .testbar button:hover { border-color: var(--accent); color: var(--accent); }
-  .testbar button:disabled { opacity: 0.35; cursor: default; }
 </style>
 
 <div class="app">
@@ -163,14 +155,6 @@
 
   <main id="stage"></main>
   <div class="alldone" id="allDone">오늘 몫을 다 읽었어요 · <b>내일 또 만나요</b></div>
-
-  <div class="testbar">
-    <span class="lbl">테스트용 · 다른 날 미리보기</span>
-    <span>
-      <button id="prevBtn">◀ 이전</button>
-      <button id="nextBtn">다음 ▶</button>
-    </span>
-  </div>
 </div>
 
 <script>
@@ -1062,14 +1046,8 @@ function updateAllDone(){
   if (r && r.sci && r.jp) el.classList.add("show"); else el.classList.remove("show");
 }
 
-/* ================= 내비 ================= */
-function refresh(){ renderHeader(); renderStats(); renderStage(); syncNav(); }
-function syncNav(){
-  document.getElementById("prevBtn").disabled = view <= 0;
-  document.getElementById("nextBtn").disabled = view >= DAYS - 1;
-}
-document.getElementById("prevBtn").addEventListener("click", ()=>{ if(view>0){ view--; refresh(); } });
-document.getElementById("nextBtn").addEventListener("click", ()=>{ if(view<DAYS-1){ view++; refresh(); } });
+/* ================= 렌더 ================= */
+function refresh(){ renderHeader(); renderStats(); renderStage(); }
 
 refresh();
 </script>
